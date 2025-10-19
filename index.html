@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Election Tracker Hub 2025</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>Election Tracker Hub</h1>
+        <nav style="display:flex;gap:20px;align-items:center;">
+            <div class="selector">
+                <label for="race-select" style="font-weight:600;color:#374151;margin-right:6px;">Select Race:</label>
+                <select id="race-select">
+                    <option value="governor_VA">Virginia Governor (2025)</option>
+                    <option value="governor_NJ">New Jersey Governor (2025)</option>
+                </select>
+            </div>
+            <a href="articles.html" style="font-weight:600;color:#0a2472;">Analysis</a>
+        </nav>
+    </header>
+
+
+    <main>
+        <section class="chart-section">
+            <h2>Trend Line (Hybrid)</h2>
+            <svg id="trend-chart"></svg>
+        </section>
+
+        <section class="chart-section">
+            <h2>Polling Aggregate</h2>
+            <svg id="bar-chart"></svg>
+        </section>
+
+        <section class="chart-section">
+            <h2>Full Polling Table</h2>
+            <div id="poll-source-table"></div>
+        </section>
+    </main>
+
+    <footer>
+        Built by <b>Tarik Mugul</b> · Data aggregated from public polling sources · Updated October 2025
+    </footer>
+
+    <script src="app.js"></script>
+    <script src="races/governor_VA.js"></script>
+    <script src="races/governor_NJ.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.renderVirginiaGovernor) window.renderVirginiaGovernor();
+
+            const select = document.getElementById("race-select");
+            select.addEventListener("change", e => {
+                d3.select("#trend-chart").selectAll("*").remove();
+                d3.select("#bar-chart").selectAll("*").remove();
+                document.getElementById("poll-source-table").innerHTML = "";
+
+                const val = e.target.value;
+                if (val === "governor_VA" && window.renderVirginiaGovernor) window.renderVirginiaGovernor();
+                if (val === "governor_NJ" && window.renderNewJerseyGovernor) window.renderNewJerseyGovernor();
+            });
+        });
+    </script>
+</body>
+
+</html>
